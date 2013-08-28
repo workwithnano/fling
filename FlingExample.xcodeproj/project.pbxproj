@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3E15562017CDA1DE0065B3FE /* MTFFlingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E15561F17CDA1DE0065B3FE /* MTFFlingView.m */; };
+		3E15562017CDA1DE0065B3FE /* MTFFlingBehavior.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E15561F17CDA1DE0065B3FE /* MTFFlingBehavior.m */; };
 		3ED46C4E17CD99DD0037F62A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ED46C4D17CD99DC0037F62A /* Foundation.framework */; };
 		3ED46C5017CD99DD0037F62A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ED46C4F17CD99DD0037F62A /* CoreGraphics.framework */; };
 		3ED46C5217CD99DD0037F62A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ED46C5117CD99DD0037F62A /* UIKit.framework */; };
@@ -34,8 +34,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3E15561E17CDA1DE0065B3FE /* MTFFlingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTFFlingView.h; sourceTree = "<group>"; };
-		3E15561F17CDA1DE0065B3FE /* MTFFlingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTFFlingView.m; sourceTree = "<group>"; };
+		3E15561E17CDA1DE0065B3FE /* MTFFlingBehavior.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTFFlingBehavior.h; sourceTree = "<group>"; };
+		3E15561F17CDA1DE0065B3FE /* MTFFlingBehavior.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTFFlingBehavior.m; sourceTree = "<group>"; };
 		3ED46C4A17CD99DC0037F62A /* FlingExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlingExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3ED46C4D17CD99DC0037F62A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3ED46C4F17CD99DD0037F62A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -117,8 +117,8 @@
 				3ED46C5D17CD99DD0037F62A /* MTFAppDelegate.m */,
 				3ED46C6517CD99DD0037F62A /* MTFViewController.h */,
 				3ED46C6617CD99DD0037F62A /* MTFViewController.m */,
-				3E15561E17CDA1DE0065B3FE /* MTFFlingView.h */,
-				3E15561F17CDA1DE0065B3FE /* MTFFlingView.m */,
+				3E15561E17CDA1DE0065B3FE /* MTFFlingBehavior.h */,
+				3E15561F17CDA1DE0065B3FE /* MTFFlingBehavior.m */,
 				3ED46C6817CD99DD0037F62A /* Images.xcassets */,
 				3ED46C5417CD99DD0037F62A /* Supporting Files */,
 			);
@@ -254,7 +254,7 @@
 				3ED46C6717CD99DD0037F62A /* MTFViewController.m in Sources */,
 				3ED46C5E17CD99DD0037F62A /* MTFAppDelegate.m in Sources */,
 				3ED46C5A17CD99DD0037F62A /* main.m in Sources */,
-				3E15562017CDA1DE0065B3FE /* MTFFlingView.m in Sources */,
+				3E15562017CDA1DE0065B3FE /* MTFFlingBehavior.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
