@@ -30,6 +30,7 @@
     [self.view addSubview:self.flingView];
     
     self.flingBehavior = [MTFFlingBehavior instanceWithTarget:self];
+    self.flingBehavior.smoothnessFactor = 0.95f;
     
     UIPanGestureRecognizer* panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(viewDidPan:)];
     [self.flingView addGestureRecognizer:panRecognizer];
@@ -49,13 +50,15 @@
 - (void)viewDidPan:(UIPanGestureRecognizer*)sender
 {
     CGPoint translation = [sender translationInView:self.view];
-    NSLog( @"Origin: %@ ||||| Translation: %@", NSStringFromCGPoint(self.flingView.frame.origin), NSStringFromCGPoint(translation));
+//    NSLog( @"Origin: %@ ||||| Translation: %@", NSStringFromCGPoint(self.flingView.frame.origin), NSStringFromCGPoint(translation));
     self.flingView.center = CGPointMake(self.flingView.center.x + translation.x, self.flingView.center.y + translation.y);
     [sender setTranslation:CGPointZero inView:self.view];
     if (sender.state == UIGestureRecognizerStateCancelled ||
         sender.state == UIGestureRecognizerStateEnded ||
         sender.state == UIGestureRecognizerStateFailed)
     {
+        if ([sender velocityInView:self.view].x < -600.f)
+            NSLog( @"fast negative velo!" );
         [self.flingBehavior decelerateWithVelocity:[sender velocityInView:self.view] withCompletionBlock:nil];
     }
 }

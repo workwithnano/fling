@@ -8,7 +8,7 @@
 
 #import "MTFFlingBehavior.h"
 
-const CGFloat kTimerInterval = 0.025;
+const CGFloat kTimerInterval = 0.005;
 
 @interface MTFFlingBehavior ()
 
@@ -23,7 +23,7 @@ const CGFloat kTimerInterval = 0.025;
     if (!(self = [super init])) return nil;
     if (!target) return nil;
     _target = target;
-    _smoothnessFactor = 0.8;
+    self.smoothnessFactor = 0.8;
     return self;
 }
 
@@ -40,7 +40,7 @@ const CGFloat kTimerInterval = 0.025;
 
 - (BOOL)decelerating
 {
-    return _timer.isValid;
+    return self.timer.isValid;
 }
 
 - (void)decelerateWithVelocity:(CGPoint)velocity withCompletionBlock:(DecelerationCompletionBlock)completionBlock
@@ -50,20 +50,31 @@ const CGFloat kTimerInterval = 0.025;
     {
         userInfo[@"completionBlock"] = completionBlock;
     }
-    [_timer invalidate];
-    _timer = [NSTimer scheduledTimerWithTimeInterval:kTimerInterval target:self selector:@selector(step:) userInfo:userInfo repeats:YES];
+    [self.timer invalidate];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:kTimerInterval target:self selector:@selector(step:) userInfo:userInfo repeats:YES];
+}
+
+- (void)decelerateWithVelocity:(CGPoint)velocity inView:(UIView*)boundingView withCompletionBlock:(DecelerationCompletionBlock)completionBlock
+{
+    NSMutableDictionary *userInfo = [@{@"velocity" : [NSValue valueWithCGPoint:velocity]} mutableCopy];
+    if (completionBlock)
+    {
+        userInfo[@"completionBlock"] = completionBlock;
+    }
+    [self.timer invalidate];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:kTimerInterval target:self selector:@selector(step:) userInfo:userInfo repeats:YES];
 }
 
 - (void)cancelDeceleration
 {
-    [_timer invalidate];
+    [self.timer invalidate];
 }
 
-- (void)step:(NSTimer *)timer
+- (void)boundStep:(NSTimer*)timer
 {
     CGPoint velocity = [timer.userInfo[@"velocity"] CGPointValue];
-    velocity.x *= _smoothnessFactor;
-    velocity.y *= _smoothnessFactor;
+    velocity.x *= self.smoothnessFactor;
+    velocity.y *= self.smoothnessFactor;
     timer.userInfo[@"velocity"] = [NSValue valueWithCGPoint:velocity];
     
     CGPoint distance;
@@ -80,7 +91,31 @@ const CGFloat kTimerInterval = 0.025;
         [timer invalidate];
         return;
     }
-    [_target addTranslation:distance];
+    [self.target addTranslation:distance];
+}
+
+- (void)step:(NSTimer *)timer
+{
+    CGPoint velocity = [timer.userInfo[@"velocity"] CGPointValue];
+    velocity.x *= self.smoothnessFactor;
+    velocity.y *= self.smoothnessFactor;
+    timer.userInfo[@"velocity"] = [NSValue valueWithCGPoint:velocity];
+    
+    CGPoint distance;
+    distance.x = velocity.x * kTimerInterval;
+    distance.y = velocity.y * kTimerInterval;
+    
+    if((ABS(velocity.x) <= 0.001 && ABS(velocity.y) <= 0.001))
+    {
+        if (timer.userInfo[@"completionBlock"])
+        {
+            DecelerationCompletionBlock completionBlock = timer.userInfo[@"completionBlock"];
+            completionBlock();
+        }
+        [timer invalidate];
+        return;
+    }
+    [self.target addTranslation:distance];
 }
 
 @end
