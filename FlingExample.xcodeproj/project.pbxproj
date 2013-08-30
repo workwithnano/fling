@@ -376,7 +376,7 @@
 				GCC_PREFIX_HEADER = "FlingExample/FlingExample-Prefix.pch";
 				INFOPLIST_FILE = "FlingExample/FlingExample-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "C513B82C-0A87-47B9-A44D-E5297288BA1A";
+				PROVISIONING_PROFILE = "2855EFF2-ABE3-47AA-9A53-613356F35800";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -386,11 +386,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FlingExample/FlingExample-Prefix.pch";
 				INFOPLIST_FILE = "FlingExample/FlingExample-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "C513B82C-0A87-47B9-A44D-E5297288BA1A";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

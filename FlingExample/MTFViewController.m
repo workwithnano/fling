@@ -71,7 +71,9 @@
             [UIView animateWithDuration:0.1 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
                 self.flingView.frame = CGRectMake(endingX, MIN(MAX(0.f, endingY), (CGRectGetHeight(self.view.bounds) - CGRectGetHeight(self.flingView.bounds))), CGRectGetWidth(self.flingView.frame), CGRectGetHeight(self.flingView.frame));
             } completion:^(BOOL finished) {
-                
+                [UIView animateWithDuration:1.2 delay:0.8 usingSpringWithDamping:0.5f initialSpringVelocity:1.f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                    self.flingView.frame = CGRectMake( 100.f, 100.f, CGRectGetWidth(self.flingView.frame), CGRectGetHeight(self.flingView.frame) );
+                } completion:nil];
             }];
         }
 //        [self.flingBehavior decelerateWithVelocity:[sender velocityInView:self.view] withCompletionBlock:nil];
