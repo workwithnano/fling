@@ -70,30 +70,6 @@ const CGFloat kTimerInterval = 0.005;
     [self.timer invalidate];
 }
 
-- (void)boundStep:(NSTimer*)timer
-{
-    CGPoint velocity = [timer.userInfo[@"velocity"] CGPointValue];
-    velocity.x *= self.smoothnessFactor;
-    velocity.y *= self.smoothnessFactor;
-    timer.userInfo[@"velocity"] = [NSValue valueWithCGPoint:velocity];
-    
-    CGPoint distance;
-    distance.x = velocity.x * kTimerInterval;
-    distance.y = velocity.y * kTimerInterval;
-    
-    if((ABS(velocity.x) <= 0.001 && ABS(velocity.y) <= 0.001))
-    {
-        if (timer.userInfo[@"completionBlock"])
-        {
-            DecelerationCompletionBlock completionBlock = timer.userInfo[@"completionBlock"];
-            completionBlock();
-        }
-        [timer invalidate];
-        return;
-    }
-    [self.target addTranslation:distance];
-}
-
 - (void)step:(NSTimer *)timer
 {
     CGPoint velocity = [timer.userInfo[@"velocity"] CGPointValue];

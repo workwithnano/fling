@@ -58,8 +58,23 @@
         sender.state == UIGestureRecognizerStateFailed)
     {
         if ([sender velocityInView:self.view].x < -600.f)
+        {
+            CGPoint velo = [sender velocityInView:self.view];
             NSLog( @"fast negative velo!" );
-        [self.flingBehavior decelerateWithVelocity:[sender velocityInView:self.view] withCompletionBlock:nil];
+            // Calculate the ending frame's y value
+            CGFloat endingX = -1.f * CGRectGetWidth(self.flingView.bounds);
+            CGFloat xDistance = ABS(endingX) + CGRectGetMinX(self.flingView.frame);
+            CGFloat startingY = CGRectGetMinY(self.flingView.frame);
+            CGFloat ratio = xDistance/ABS(velo.x);
+            CGFloat endingY = (ratio * velo.y) + startingY;
+            
+            [UIView animateWithDuration:0.1 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+                self.flingView.frame = CGRectMake(endingX, MIN(MAX(0.f, endingY), (CGRectGetHeight(self.view.bounds) - CGRectGetHeight(self.flingView.bounds))), CGRectGetWidth(self.flingView.frame), CGRectGetHeight(self.flingView.frame));
+            } completion:^(BOOL finished) {
+                
+            }];
+        }
+//        [self.flingBehavior decelerateWithVelocity:[sender velocityInView:self.view] withCompletionBlock:nil];
     }
 }
 
