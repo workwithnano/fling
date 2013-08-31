@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3E15562017CDA1DE0065B3FE /* MTFFlingBehavior.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E15561F17CDA1DE0065B3FE /* MTFFlingBehavior.m */; };
-		3E675F3517D14EC900761145 /* UIView+MTFFling.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E675F3417D14EC900761145 /* UIView+MTFFling.m */; };
+		3E0D1B1A17D23987002C0B2D /* MTFFlingBehavior.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E0D1B1217D23973002C0B2D /* MTFFlingBehavior.m */; };
+		3E0D1B1B17D23987002C0B2D /* UIView+MTFFling.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E0D1B1417D23973002C0B2D /* UIView+MTFFling.m */; };
 		3E675F3817D1708800761145 /* MTFCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E675F3717D1708800761145 /* MTFCollectionViewCell.m */; };
 		3ED46C4E17CD99DD0037F62A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ED46C4D17CD99DC0037F62A /* Foundation.framework */; };
 		3ED46C5017CD99DD0037F62A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ED46C4F17CD99DD0037F62A /* CoreGraphics.framework */; };
@@ -36,10 +36,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3E15561E17CDA1DE0065B3FE /* MTFFlingBehavior.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MTFFlingBehavior.h; path = FlingExample/MTFFlingBehavior.h; sourceTree = "<group>"; };
-		3E15561F17CDA1DE0065B3FE /* MTFFlingBehavior.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MTFFlingBehavior.m; path = FlingExample/MTFFlingBehavior.m; sourceTree = "<group>"; };
-		3E675F3317D14EC900761145 /* UIView+MTFFling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+MTFFling.h"; path = "FlingExample/UIView+MTFFling.h"; sourceTree = "<group>"; };
-		3E675F3417D14EC900761145 /* UIView+MTFFling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+MTFFling.m"; path = "FlingExample/UIView+MTFFling.m"; sourceTree = "<group>"; };
+		3E0D1B1117D23973002C0B2D /* MTFFlingBehavior.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MTFFlingBehavior.h; sourceTree = "<group>"; };
+		3E0D1B1217D23973002C0B2D /* MTFFlingBehavior.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MTFFlingBehavior.m; sourceTree = "<group>"; };
+		3E0D1B1317D23973002C0B2D /* UIView+MTFFling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+MTFFling.h"; sourceTree = "<group>"; };
+		3E0D1B1417D23973002C0B2D /* UIView+MTFFling.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+MTFFling.m"; sourceTree = "<group>"; };
 		3E675F3617D1708800761145 /* MTFCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTFCollectionViewCell.h; sourceTree = "<group>"; };
 		3E675F3717D1708800761145 /* MTFCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTFCollectionViewCell.m; sourceTree = "<group>"; };
 		3ED46C4A17CD99DC0037F62A /* FlingExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlingExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,25 +86,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3E675F3217D14EAC00761145 /* FlingLibrary */ = {
+		3E0D1B1017D23968002C0B2D /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
-				3E675F3317D14EC900761145 /* UIView+MTFFling.h */,
-				3E675F3417D14EC900761145 /* UIView+MTFFling.m */,
-				3E15561E17CDA1DE0065B3FE /* MTFFlingBehavior.h */,
-				3E15561F17CDA1DE0065B3FE /* MTFFlingBehavior.m */,
+				3E0D1B1517D23973002C0B2D /* Fling */,
 			);
-			name = FlingLibrary;
+			name = Vendor;
+			sourceTree = "<group>";
+		};
+		3E0D1B1517D23973002C0B2D /* Fling */ = {
+			isa = PBXGroup;
+			children = (
+				3E0D1B1117D23973002C0B2D /* MTFFlingBehavior.h */,
+				3E0D1B1217D23973002C0B2D /* MTFFlingBehavior.m */,
+				3E0D1B1317D23973002C0B2D /* UIView+MTFFling.h */,
+				3E0D1B1417D23973002C0B2D /* UIView+MTFFling.m */,
+			);
+			name = Fling;
+			path = ../Fling;
 			sourceTree = "<group>";
 		};
 		3ED46C4117CD99DC0037F62A = {
 			isa = PBXGroup;
 			children = (
-				3E675F3217D14EAC00761145 /* FlingLibrary */,
 				3ED46C5317CD99DD0037F62A /* FlingExample */,
 				3ED46C7517CD99DD0037F62A /* FlingExampleTests */,
 				3ED46C4C17CD99DC0037F62A /* Frameworks */,
 				3ED46C4B17CD99DC0037F62A /* Products */,
+				3E0D1B1017D23968002C0B2D /* Vendor */,
 			);
 			sourceTree = "<group>";
 		};
@@ -140,8 +149,8 @@
 				3ED46C6817CD99DD0037F62A /* Images.xcassets */,
 				3ED46C5417CD99DD0037F62A /* Supporting Files */,
 			);
-			path = FlingExample;
-			sourceTree = "<group>";
+			name = FlingExample;
+			sourceTree = SOURCE_ROOT;
 		};
 		3ED46C5417CD99DD0037F62A /* Supporting Files */ = {
 			isa = PBXGroup;
@@ -269,12 +278,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E675F3517D14EC900761145 /* UIView+MTFFling.m in Sources */,
 				3ED46C6717CD99DD0037F62A /* MTFViewController.m in Sources */,
 				3E675F3817D1708800761145 /* MTFCollectionViewCell.m in Sources */,
 				3ED46C5E17CD99DD0037F62A /* MTFAppDelegate.m in Sources */,
 				3ED46C5A17CD99DD0037F62A /* main.m in Sources */,
-				3E15562017CDA1DE0065B3FE /* MTFFlingBehavior.m in Sources */,
+				3E0D1B1A17D23987002C0B2D /* MTFFlingBehavior.m in Sources */,
+				3E0D1B1B17D23987002C0B2D /* UIView+MTFFling.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,8 +402,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "FlingExample/FlingExample-Prefix.pch";
-				INFOPLIST_FILE = "FlingExample/FlingExample-Info.plist";
+				GCC_PREFIX_HEADER = "FlingExample-Prefix.pch";
+				INFOPLIST_FILE = "FlingExample-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "2855EFF2-ABE3-47AA-9A53-613356F35800";
 				WRAPPER_EXTENSION = app;
@@ -408,8 +417,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "FlingExample/FlingExample-Prefix.pch";
-				INFOPLIST_FILE = "FlingExample/FlingExample-Info.plist";
+				GCC_PREFIX_HEADER = "FlingExample-Prefix.pch";
+				INFOPLIST_FILE = "FlingExample-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
