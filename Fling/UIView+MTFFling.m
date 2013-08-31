@@ -10,13 +10,72 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UIView+MTFFling.h"
 
+//-----------------------------------------------------------------------
+#pragma mark - Static variables and constants -
+//-----------------------------------------------------------------------
+
 static char const * const flingBehaviorKey = "flingBehavior";
 static char const * const superViewKey = "superView";
 static char const * const originalFrameKey = "originalFrame";
 static char const * const gestureDelegateKey = "gestureDelegate";
 static char const * const panGestureKey = "panGesture";
 
+#pragma mark -
 @implementation UIView (MTFFling)
+
+//-----------------------------------------------------------------------
+#pragma mark - Public properties -
+//-----------------------------------------------------------------------
+
+- (MTFFlingBehavior *)flingBehavior
+{
+    MTFFlingBehavior *result = objc_getAssociatedObject(self, flingBehaviorKey);
+    return result;
+}
+- (void)setFlingBehavior:(MTFFlingBehavior *)flingBehavior
+{
+    objc_setAssociatedObject(self, flingBehaviorKey, flingBehavior, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (UIView*)targetView
+{
+    UIView *result = objc_getAssociatedObject(self, superViewKey);
+    return result;
+}
+- (void)setTargetView:(UIView *)targetView
+{
+    objc_setAssociatedObject(self, superViewKey, targetView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (id<UIGestureRecognizerDelegate>)gestureDelegate
+{
+    id<UIGestureRecognizerDelegate> result = objc_getAssociatedObject(self, gestureDelegateKey);
+    return result;
+}
+- (void)setGestureDelegate:(id<UIGestureRecognizerDelegate>)gestureDelegate
+{
+    UIPanGestureRecognizer *panRecognizer = objc_getAssociatedObject(self, panGestureKey);
+    panRecognizer.delegate = gestureDelegate;
+    objc_setAssociatedObject(self, gestureDelegateKey, gestureDelegate, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+//-----------------------------------------------------------------------
+#pragma mark - Private properties -
+//-----------------------------------------------------------------------
+
+- (id<UIGestureRecognizerDelegate>)gestureSuperview
+{
+    if ([self.superview conformsToProtocol:@protocol(UIGestureRecognizerDelegate)])
+        return (id<UIGestureRecognizerDelegate>)self.superview;
+    else
+    {
+        return nil;
+    }
+}
+
+//-----------------------------------------------------------------------
+#pragma mark - Public methods -
+//-----------------------------------------------------------------------
 
 - (void)makeFlingable
 {
@@ -35,6 +94,10 @@ static char const * const panGestureKey = "panGesture";
     self.gestureDelegate = self;
     [self addGestureRecognizer:panRecognizer];
 }
+
+//-----------------------------------------------------------------------
+#pragma mark - UIGestureRecognizer methods -
+//-----------------------------------------------------------------------
 
 - (void)viewDidPan:(UIPanGestureRecognizer*)sender
 {
@@ -110,49 +173,6 @@ static char const * const panGestureKey = "panGesture";
     self.frame = slidingViewFrame;
 }
 
-
-- (MTFFlingBehavior *)flingBehavior
-{
-    MTFFlingBehavior *result = objc_getAssociatedObject(self, flingBehaviorKey);
-    return result;
-}
-- (void)setFlingBehavior:(MTFFlingBehavior *)flingBehavior
-{
-    objc_setAssociatedObject(self, flingBehaviorKey, flingBehavior, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (UIView*)targetView
-{
-    UIView *result = objc_getAssociatedObject(self, superViewKey);
-    return result;
-}
-- (void)setTargetView:(UIView *)targetView
-{
-    objc_setAssociatedObject(self, superViewKey, targetView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (id<UIGestureRecognizerDelegate>)gestureDelegate
-{
-    id<UIGestureRecognizerDelegate> result = objc_getAssociatedObject(self, gestureDelegateKey);
-    return result;
-}
-- (void)setGestureDelegate:(id<UIGestureRecognizerDelegate>)gestureDelegate
-{
-    UIPanGestureRecognizer *panRecognizer = objc_getAssociatedObject(self, panGestureKey);
-    panRecognizer.delegate = gestureDelegate;
-    objc_setAssociatedObject(self, gestureDelegateKey, gestureDelegate, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (id<UIGestureRecognizerDelegate>)gestureSuperview
-{
-    if ([self.superview conformsToProtocol:@protocol(UIGestureRecognizerDelegate)])
-        return (id<UIGestureRecognizerDelegate>)self.superview;
-    else
-    {
-        return nil;
-    }
-}
-
 // Only allow horizontal swiping…
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
@@ -167,6 +187,10 @@ static char const * const panGestureKey = "panGesture";
         return YES;
     }
 }
+
+//-----------------------------------------------------------------------
+#pragma mark - UIView translations -
+//-----------------------------------------------------------------------
 
 - (void)liftView
 {

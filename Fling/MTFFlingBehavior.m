@@ -8,15 +8,32 @@
 
 #import "MTFFlingBehavior.h"
 
+//-----------------------------------------------------------------------
+#pragma mark - Static variables and constants -
+//-----------------------------------------------------------------------
+
 const CGFloat kTimerInterval = 0.005;
 
 @interface MTFFlingBehavior ()
+
+//-----------------------------------------------------------------------
+#pragma mark - Private properties -
+//-----------------------------------------------------------------------
 
 @property (nonatomic, strong) NSTimer *timer;
 
 @end
 
+#pragma mark -
 @implementation MTFFlingBehavior
+
+//-----------------------------------------------------------------------
+#pragma mark - Private types -
+//-----------------------------------------------------------------------
+
+//-----------------------------------------------------------------------
+#pragma mark - Contruction and Destruction -
+//-----------------------------------------------------------------------
 
 - (id)initWithTarget:(id <MTFFlingBehaviorDelegate>)target
 {
@@ -27,21 +44,30 @@ const CGFloat kTimerInterval = 0.005;
     return self;
 }
 
++ (id)instanceWithTarget:(id<MTFFlingBehaviorDelegate>)target
+{
+    return [[self alloc] initWithTarget:target];
+}
+
 - (id)init
 {
     [NSException raise:@"Should use initWithTarget: or instanceWithTarget: methods" format:@"Should use initWithTarget: or instanceWithTarget: methods"];
     return nil;
 }
 
-+ (id)instanceWithTarget:(id<MTFFlingBehaviorDelegate>)target
-{
-    return [[self alloc] initWithTarget:target];
-}
+//-----------------------------------------------------------------------
+#pragma mark - Public properties -
+//-----------------------------------------------------------------------
 
 - (BOOL)decelerating
 {
     return self.timer.isValid;
 }
+
+//-----------------------------------------------------------------------
+#pragma mark - Public methods -
+//-----------------------------------------------------------------------
+
 
 - (void)decelerateWithVelocity:(CGPoint)velocity withCompletionBlock:(DecelerationCompletionBlock)completionBlock
 {
@@ -70,6 +96,10 @@ const CGFloat kTimerInterval = 0.005;
     [self.timer invalidate];
 }
 
+//-----------------------------------------------------------------------
+#pragma mark - Private methods -
+//-----------------------------------------------------------------------
+
 - (void)step:(NSTimer *)timer
 {
     CGPoint velocity = [timer.userInfo[@"velocity"] CGPointValue];
@@ -93,5 +123,6 @@ const CGFloat kTimerInterval = 0.005;
     }
     [self.target addTranslation:distance];
 }
+
 
 @end

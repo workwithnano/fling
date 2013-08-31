@@ -8,7 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+//-----------------------------------------------------------------------
+// Public constants
+//-----------------------------------------------------------------------
+
+//-----------------------------------------------------------------------
+// Public types
+//-----------------------------------------------------------------------
+
 typedef void (^DecelerationCompletionBlock)();
+
+//-----------------------------------------------------------------------
+// Public protocols
+//-----------------------------------------------------------------------
 
 @protocol MTFFlingBehaviorDelegate <NSObject>
 
@@ -17,10 +29,12 @@ typedef void (^DecelerationCompletionBlock)();
 
 @end
 
+#pragma mark -
 @interface MTFFlingBehavior : NSObject
 
-+ (id)instanceWithTarget:(id<MTFFlingBehaviorDelegate>)target;
-- (id)initWithTarget:(id<MTFFlingBehaviorDelegate>)target;
+//-----------------------------------------------------------------------
+// Public properties
+//-----------------------------------------------------------------------
 
 @property (nonatomic, weak, readonly) id<MTFFlingBehaviorDelegate> target;
 
@@ -28,6 +42,13 @@ typedef void (^DecelerationCompletionBlock)();
 //smoothnessFactor's range should be between 0 and < 1 if its beyond those range then behaviour is unexpected
 //defaults to 0.8
 @property (nonatomic, assign) CGFloat smoothnessFactor;
+
+//-----------------------------------------------------------------------
+// Public methods
+//-----------------------------------------------------------------------
+
++ (id)instanceWithTarget:(id<MTFFlingBehaviorDelegate>)target;
+- (id)initWithTarget:(id<MTFFlingBehaviorDelegate>)target;
 
 - (void)decelerateWithVelocity:(CGPoint)velocity withCompletionBlock:(DecelerationCompletionBlock)completionBlock;
 - (void)cancelDeceleration; //cancelling will not invoke completion block
