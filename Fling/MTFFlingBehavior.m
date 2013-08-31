@@ -111,7 +111,7 @@ const CGFloat kTimerInterval = 0.005;
     distance.x = velocity.x * kTimerInterval;
     distance.y = velocity.y * kTimerInterval;
     
-    if((ABS(velocity.x) <= 0.001 && ABS(velocity.y) <= 0.001))
+    if((ABS(velocity.x) <= 0.01 && ABS(velocity.y) <= 0.01))
     {
         if (timer.userInfo[@"completionBlock"])
         {
