@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "group:Fling"
+      name = "Fling">
+      <FileRef
+         location = "group:MTFFlingBehavior.h">
+      </FileRef>
+      <FileRef
+         location = "group:MTFFlingBehavior.m">
+      </FileRef>
+      <FileRef
+         location = "group:UIView+MTFFling.h">
+      </FileRef>
+      <FileRef
+         location = "group:UIView+MTFFling.m">
+      </FileRef>
+   </Group>
+   <FileRef
+      location = "container:FlingExample/FlingExample.xcodeproj">
+   </FileRef>
+</Workspace>
