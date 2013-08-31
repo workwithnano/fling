@@ -8,11 +8,13 @@
 
 #import "MTFViewController.h"
 #import "MTFFlingBehavior.h"
+#import "MTFCollectionViewCell.h"
 #import "UIView+MTFFling.h"
 
 @interface MTFViewController ()
+<UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
-@property (nonatomic) UIView* flingView;
+@property (nonatomic) UICollectionView* flingView;
 
 @end
 
@@ -22,13 +24,22 @@
 {
     [super viewDidLoad];
     
+    self.view.backgroundColor = [UIColor whiteColor];
+    
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     
-    self.flingView = [[UIView alloc] initWithFrame:CGRectMake(20.f,20.f, 100.f, 100.f)];
-    self.flingView.backgroundColor = [UIColor blueColor];
+    self.flingView = [[UICollectionView alloc] initWithFrame:self.view.frame collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
+    self.flingView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+    self.flingView.backgroundColor = [UIColor whiteColor];
+    self.flingView.delegate = self;
+    self.flingView.dataSource = self;
+    [self.flingView registerClass:[MTFCollectionViewCell class] forCellWithReuseIdentifier:@"flingerCell"];
     [self.view addSubview:self.flingView];
-    
-    [self.flingView makeFlingable];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self.flingView reloadData];
 }
 
 - (void)loadView
@@ -40,6 +51,26 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return 200;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return CGSizeMake( 100.f, 100.f );
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"flingerCell" forIndexPath:indexPath];
+    if (!cell.targetView)
+    {
+        cell.targetView = self.view;
+    }
+    return cell;
 }
 
 @end

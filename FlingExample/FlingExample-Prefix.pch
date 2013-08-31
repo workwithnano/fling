@@ -14,3 +14,25 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
 #endif
+
+
+
+//-----------------------------------------------------------------------
+// Drawing macros
+//-----------------------------------------------------------------------
+#define CGPointCenterOf(__CGRECT__) CGPointMake((__CGRECT__.origin.x + __CGRECT__.size.width) / 2.0f, (__CGRECT__.origin.y + __CGRECT__.size.height) / 2.0f)
+#define CGRectLeft(__CGRECT__) (__CGRECT__.origin.x)
+#define CGRectSetLeft(__CGRECT__, __LEFT__) CGRectMake(__LEFT__, __CGRECT__.origin.y, __CGRECT__.size.width, __CGRECT__.size.height)
+#define CGRectRight(__CGRECT__) (__CGRECT__.origin.x + __CGRECT__.size.width)
+#define CGRectSetRight(__CGRECT__, __RIGHT__) CGRectMake(__RIGHT__ - __CGRECT__.size.width, __CGRECT__.origin.y, __CGRECT__.size.width, __CGRECT__.size.height)
+#define CGRectSetWidth(__CGRECT__, __WIDTH__) CGRectMake(__CGRECT__.origin.x, __CGRECT__.origin.y, __WIDTH__, __CGRECT__.size.height)
+#define CGRectTop(__CGRECT__) (__CGRECT__.origin.y)
+#define CGRectSetTop(__CGRECT__, __TOP__) CGRectMake(__CGRECT__.origin.x, __TOP__, __CGRECT__.size.width, __CGRECT__.size.height)
+#define CGRectBottom(__CGRECT__) (__CGRECT__.origin.y + __CGRECT__.size.height)
+#define CGRectSetBottom(__CGRECT__, __BOTTOM__) CGRectMake(__CGRECT__.origin.x, __BOTTOM__ - __CGRECT__.size.height, __CGRECT__.size.width, __CGRECT__.size.height)
+#define CGRectSetHeight(__CGRECT__, __HEIGHT__) CGRectMake(__CGRECT__.origin.x, __CGRECT__.origin.y, __CGRECT__.size.width, __HEIGHT__)
+#define CGRectMakeFrom(__CGSIZE__) CGRectMake(0, 0, __CGSIZE__.width, __CGSIZE__.height)
+#define CGRectMakeWith(__CGPOINT__, __CGSIZE__) CGRectMake(__CGPOINT__.x, __CGPOINT__.y, __CGSIZE__.width, __CGSIZE__.height)
+#define CGRectMarginX(__CGRECT1__, __CGRECT2__) MIN(ABS(CGRectLeft(__CGRECT1__) - CGRectRight(__CGRECT2__)), ABS(CGRectLeft(__CGRECT2__) - CGRectRight(__CGRECT1__)))
+#define CGRectMarginY(__CGRECT1__, __CGRECT2__) MIN(ABS(CGRectTop(__CGRECT1__) - CGRectBottom(__CGRECT2__)), ABS(CGRectTop(__CGRECT2__) - CGRectBottom(__CGRECT1__)))
+#define CGSizeIntegral(__CGSIZE__) CGSizeMake(ceilf(__CGSIZE__.width), ceilf(__CGSIZE__.height))

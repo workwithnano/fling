@@ -10,12 +10,13 @@
 #import "MTFFlingBehavior.h"
 
 @interface UIView (MTFFling)
-<MTFFlingBehaviorDelegate>
+<MTFFlingBehaviorDelegate, UIGestureRecognizerDelegate>
 
-@property (nonatomic, strong) UIView *targetView;
+@property (nonatomic, strong) UIView* targetView;
 @property (nonatomic, strong) MTFFlingBehavior *flingBehavior;
+@property (nonatomic, strong) id<UIGestureRecognizerDelegate> gestureDelegate;
 
 - (void) makeFlingable;
-- (void) makeFlingableInView:(UIView *)targetView;
+- (void) makeFlingableInView:(UIView*)targetView;
 
 @end

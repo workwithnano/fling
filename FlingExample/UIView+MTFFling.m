@@ -9,17 +9,20 @@
 #import <objc/runtime.h>
 #import "UIView+MTFFling.h"
 
-static void *flingBehavior; // store the reference to the flingBehavior as if it were a property
-static void *superView; // store the ref to the superView target as if it were a property
+static char const * const flingBehaviorKey = "flingBehavior";
+static char const * const superViewKey = "superView";
+static char const * const originalFrameKey = "originalFrame";
+static char const * const gestureDelegateKey = "gestureDelegate";
+static char const * const panGestureKey = "panGesture";
 
 @implementation UIView (MTFFling)
 
 - (void)makeFlingable
 {
-    [self makeFlingableInView:self.superview];
+    [self makeFlingableInView:(UIView*)[self gestureSuperview]];
 }
 
-- (void)makeFlingableInView:(UIView *)targetView
+- (void)makeFlingableInView:(UIView*)targetView
 {
     self.targetView = targetView;
     
@@ -27,6 +30,8 @@ static void *superView; // store the ref to the superView target as if it were a
     self.flingBehavior.smoothnessFactor = 0.95f;
     
     UIPanGestureRecognizer* panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(viewDidPan:)];
+    objc_setAssociatedObject(self, panGestureKey, panRecognizer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    self.gestureDelegate = self;
     [self addGestureRecognizer:panRecognizer];
 }
 
@@ -34,25 +39,31 @@ static void *superView; // store the ref to the superView target as if it were a
 {
     if (sender.state == UIGestureRecognizerStateBegan)
     {
-        if ([self.superview.subviews indexOfObject:self] > 0)
+        if (![self.gestureDelegate conformsToProtocol:@protocol(UIGestureRecognizerDelegate)])
         {
+            [NSException raise:@"Flinging view's gestureDelegate does not conform to <UIGestureRecognizerDelegate> protocol." format:nil];
+        }
+        if ([self.targetView.subviews indexOfObject:self] > 0)
+        {
+            objc_setAssociatedObject(self, originalFrameKey, [NSValue valueWithCGRect:self.frame], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            self.backgroundColor = [UIColor yellowColor];
             [self.superview bringSubviewToFront:self];
+            
         }
     }
     else if (sender.state == UIGestureRecognizerStateChanged)
     {
-        CGPoint translation = [sender translationInView:self.superview];
+        CGPoint translation = [sender translationInView:self.targetView];
         self.center = CGPointMake(self.center.x + translation.x, self.center.y + translation.y);
-        [sender setTranslation:CGPointZero inView:self.superview];
+        [sender setTranslation:CGPointZero inView:self.targetView];
     }
     else if (sender.state == UIGestureRecognizerStateCancelled ||
         sender.state == UIGestureRecognizerStateEnded ||
         sender.state == UIGestureRecognizerStateFailed)
     {
-        if ([sender velocityInView:self.superview].x < -600.f)
+        if ([sender velocityInView:self.targetView].x < -600.f)
         {
-            CGPoint velo = [sender velocityInView:self.superview];
-            NSLog( @"fast negative velo!" );
+            CGPoint velo = [sender velocityInView:self.targetView];
             // Calculate the ending frame's y value
             CGFloat endingX = -1.f * CGRectGetWidth(self.bounds);
             CGFloat xDistance = ABS(endingX) + CGRectGetMinX(self.frame);
@@ -61,16 +72,25 @@ static void *superView; // store the ref to the superView target as if it were a
             CGFloat endingY = (ratio * velo.y) + startingY;
             
             [UIView animateWithDuration:0.1 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-                self.frame = CGRectMake(endingX, MIN(MAX(0.f, endingY), (CGRectGetHeight(self.superview.bounds) - CGRectGetHeight(self.bounds))), CGRectGetWidth(self.frame), CGRectGetHeight(self.frame));
+                CGRect newFrame = [self.targetView convertRect:CGRectMake(endingX, MIN(MAX(0.f, endingY), (CGRectGetHeight(self.targetView.bounds) - CGRectGetHeight(self.bounds))), CGRectGetWidth(self.frame), CGRectGetHeight(self.frame)) toView:self.superview];
+                self.frame = newFrame;
             } completion:^(BOOL finished) {
                 [UIView animateWithDuration:1.2 delay:0.8 usingSpringWithDamping:0.5f initialSpringVelocity:1.f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                    self.frame = CGRectMake( 100.f, 100.f, CGRectGetWidth(self.frame), CGRectGetHeight(self.frame) );
+                    NSValue *result = objc_getAssociatedObject(self, originalFrameKey);
+                    self.frame = [result CGRectValue];
+                    self.backgroundColor = [UIColor blueColor];
                 } completion:nil];
             }];
         }
         else
         {
-            [self.flingBehavior decelerateWithVelocity:[sender velocityInView:self.superview] withCompletionBlock:nil];
+            [self.flingBehavior decelerateWithVelocity:[sender velocityInView:self.targetView] withCompletionBlock:^{
+                [UIView animateWithDuration:1.2 delay:0.0 usingSpringWithDamping:0.5f initialSpringVelocity:1.f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                    NSValue *result = objc_getAssociatedObject(self, originalFrameKey);
+                    self.frame = [result CGRectValue];
+                    self.backgroundColor = [UIColor blueColor];
+                } completion:nil];
+            }];
         }
     }
 }
@@ -80,46 +100,83 @@ static void *superView; // store the ref to the superView target as if it were a
     CGRect slidingViewFrame = self.frame;
     slidingViewFrame.origin.x += traslation.x;
     slidingViewFrame.origin.y += traslation.y;
-    if(CGRectContainsRect(self.targetView.bounds, slidingViewFrame))
-    {
+//    if(CGRectContainsRect(self.targetUIView.bounds, slidingViewFrame))
+//    {
         self.frame = slidingViewFrame;
-    }
-    else
-    {
-        //make it stop at the boundary
-        if (CGRectGetMinX(slidingViewFrame) < 0 || CGRectGetMaxX(slidingViewFrame) > self.targetView.bounds.size.width)
-        {
-            slidingViewFrame.origin.x = (CGRectGetMinX(slidingViewFrame) < 0) ? 0 : (CGRectGetMaxX(self.targetView.bounds) - slidingViewFrame.size.width);
-        }
-        
-        if (CGRectGetMinY(slidingViewFrame) < 0 || CGRectGetMaxY(slidingViewFrame) > self.targetView.bounds.size.height)
-        {
-            slidingViewFrame.origin.y = (CGRectGetMinY(slidingViewFrame) < 0) ? 0 : (CGRectGetMaxY(self.targetView.bounds) - slidingViewFrame.size.height);
-        }
-        self.frame = slidingViewFrame;
-        [self.flingBehavior cancelDeceleration];
-    }
+//    }
+//    else
+//    {
+//        //make it stop at the boundary
+//        if (CGRectGetMinX(slidingViewFrame) < 0 || CGRectGetMaxX(slidingViewFrame) > self.targetUIView.bounds.size.width)
+//        {
+//            slidingViewFrame.origin.x = (CGRectGetMinX(slidingViewFrame) < 0) ? 0 : (CGRectGetMaxX(self.targetUIView.bounds) - slidingViewFrame.size.width);
+//        }
+//        
+//        if (CGRectGetMinY(slidingViewFrame) < 0 || CGRectGetMaxY(slidingViewFrame) > self.targetUIView.bounds.size.height)
+//        {
+//            slidingViewFrame.origin.y = (CGRectGetMinY(slidingViewFrame) < 0) ? 0 : (CGRectGetMaxY(self.targetUIView.bounds) - slidingViewFrame.size.height);
+//        }
+//        self.frame = slidingViewFrame;
+//        [self.flingBehavior cancelDeceleration];
+//    }
 }
 
 
 - (MTFFlingBehavior *)flingBehavior
 {
-    MTFFlingBehavior *result = objc_getAssociatedObject(self, &flingBehavior);
+    MTFFlingBehavior *result = objc_getAssociatedObject(self, flingBehaviorKey);
     return result;
 }
 - (void)setFlingBehavior:(MTFFlingBehavior *)flingBehavior
 {
-    objc_setAssociatedObject(self, &flingBehavior, flingBehavior, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, flingBehaviorKey, flingBehavior, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (UIView *)targetView
+- (UIView*)targetView
 {
-    UIView *result = objc_getAssociatedObject(self, &superView);
+    UIView *result = objc_getAssociatedObject(self, superViewKey);
     return result;
 }
 - (void)setTargetView:(UIView *)targetView
 {
-    objc_setAssociatedObject(self, &superView, targetView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, superViewKey, targetView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (id<UIGestureRecognizerDelegate>)gestureDelegate
+{
+    id<UIGestureRecognizerDelegate> result = objc_getAssociatedObject(self, gestureDelegateKey);
+    return result;
+}
+- (void)setGestureDelegate:(id<UIGestureRecognizerDelegate>)gestureDelegate
+{
+    UIPanGestureRecognizer *panRecognizer = objc_getAssociatedObject(self, panGestureKey);
+    panRecognizer.delegate = gestureDelegate;
+    objc_setAssociatedObject(self, gestureDelegateKey, gestureDelegate, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (id<UIGestureRecognizerDelegate>)gestureSuperview
+{
+    if ([self.superview conformsToProtocol:@protocol(UIGestureRecognizerDelegate)])
+        return (id<UIGestureRecognizerDelegate>)self.superview;
+    else
+    {
+        return nil;
+    }
+}
+
+// Only allow horizontal swiping…
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    if ([gestureRecognizer isEqual:objc_getAssociatedObject(self, panGestureKey)])
+    {
+        UIPanGestureRecognizer* panRecognizer = (UIPanGestureRecognizer*)gestureRecognizer;
+        CGPoint velo = [panRecognizer velocityInView:self.targetView];
+        return (ABS(velo.x)/ABS(velo.y) > 3.f);
+    }
+    else
+    {
+        return YES;
+    }
 }
 
 @end
