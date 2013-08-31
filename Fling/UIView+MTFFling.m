@@ -7,6 +7,7 @@
 //
 
 #import <objc/runtime.h>
+#import <QuartzCore/QuartzCore.h>
 #import "UIView+MTFFling.h"
 
 static char const * const flingBehaviorKey = "flingBehavior";
@@ -100,25 +101,8 @@ static char const * const panGestureKey = "panGesture";
     CGRect slidingViewFrame = self.frame;
     slidingViewFrame.origin.x += traslation.x;
     slidingViewFrame.origin.y += traslation.y;
-//    if(CGRectContainsRect(self.targetUIView.bounds, slidingViewFrame))
-//    {
-        self.frame = slidingViewFrame;
-//    }
-//    else
-//    {
-//        //make it stop at the boundary
-//        if (CGRectGetMinX(slidingViewFrame) < 0 || CGRectGetMaxX(slidingViewFrame) > self.targetUIView.bounds.size.width)
-//        {
-//            slidingViewFrame.origin.x = (CGRectGetMinX(slidingViewFrame) < 0) ? 0 : (CGRectGetMaxX(self.targetUIView.bounds) - slidingViewFrame.size.width);
-//        }
-//        
-//        if (CGRectGetMinY(slidingViewFrame) < 0 || CGRectGetMaxY(slidingViewFrame) > self.targetUIView.bounds.size.height)
-//        {
-//            slidingViewFrame.origin.y = (CGRectGetMinY(slidingViewFrame) < 0) ? 0 : (CGRectGetMaxY(self.targetUIView.bounds) - slidingViewFrame.size.height);
-//        }
-//        self.frame = slidingViewFrame;
-//        [self.flingBehavior cancelDeceleration];
-//    }
+    
+    self.frame = slidingViewFrame;
 }
 
 
