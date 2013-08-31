@@ -40,10 +40,13 @@ static char const * const panGestureKey = "panGesture";
 {
     if (sender.state == UIGestureRecognizerStateBegan)
     {
+        
         if (![self.gestureDelegate conformsToProtocol:@protocol(UIGestureRecognizerDelegate)])
         {
             [NSException raise:@"Flinging view's gestureDelegate does not conform to <UIGestureRecognizerDelegate> protocol." format:nil];
         }
+        
+        [self liftView];
         if ([self.targetView.subviews indexOfObject:self] > 0)
         {
             objc_setAssociatedObject(self, originalFrameKey, [NSValue valueWithCGRect:self.frame], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -80,6 +83,7 @@ static char const * const panGestureKey = "panGesture";
                     NSValue *result = objc_getAssociatedObject(self, originalFrameKey);
                     self.frame = [result CGRectValue];
                     self.backgroundColor = [UIColor blueColor];
+                    [self dropView];
                 } completion:nil];
             }];
         }
@@ -90,6 +94,7 @@ static char const * const panGestureKey = "panGesture";
                     NSValue *result = objc_getAssociatedObject(self, originalFrameKey);
                     self.frame = [result CGRectValue];
                     self.backgroundColor = [UIColor blueColor];
+                    [self dropView];
                 } completion:nil];
             }];
         }
@@ -161,6 +166,29 @@ static char const * const panGestureKey = "panGesture";
     {
         return YES;
     }
+}
+
+- (void)liftView
+{
+    [UIView animateWithDuration:0.2 animations:^{
+        self.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.layer.shadowOpacity = 0.3f;
+        self.layer.shadowOffset = CGSizeMake(3.f, 3.f);
+        self.layer.shadowRadius = 5.0f;
+        self.layer.masksToBounds = NO;
+        
+        UIBezierPath *path = [UIBezierPath bezierPathWithRect:self.bounds];
+        self.layer.shadowPath = path.CGPath;
+        self.layer.transform = CATransform3DMakeTranslation(-4.f, -4.f, 0.f);
+    }];
+}
+- (void)dropView
+{
+    self.layer.shadowOpacity = 0.f;
+    self.layer.shadowOffset = CGSizeZero;
+    self.layer.shadowRadius = 0.f;
+    self.layer.masksToBounds = YES;
+    self.layer.transform = CATransform3DIdentity;
 }
 
 @end
