@@ -14,7 +14,7 @@
 @interface MTFViewController ()
 <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
-@property (nonatomic) UICollectionView* flingView;
+@property (nonatomic) UICollectionView* collectionView;
 
 @end
 
@@ -28,18 +28,18 @@
     
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     
-    self.flingView = [[UICollectionView alloc] initWithFrame:self.view.frame collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
-    self.flingView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
-    self.flingView.backgroundColor = [UIColor whiteColor];
-    self.flingView.delegate = self;
-    self.flingView.dataSource = self;
-    [self.flingView registerClass:[MTFCollectionViewCell class] forCellWithReuseIdentifier:@"flingerCell"];
-    [self.view addSubview:self.flingView];
+    self.collectionView = [[UICollectionView alloc] initWithFrame:self.view.frame collectionViewLayout:[[UICollectionViewFlowLayout alloc] init]];
+    self.collectionView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+    self.collectionView.backgroundColor = [UIColor whiteColor];
+    self.collectionView.delegate = self;
+    self.collectionView.dataSource = self;
+    [self.collectionView registerClass:[MTFCollectionViewCell class] forCellWithReuseIdentifier:@"flingerCell"];
+    [self.view addSubview:self.collectionView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [self.flingView reloadData];
+    [self.collectionView reloadData];
 }
 
 - (void)loadView
