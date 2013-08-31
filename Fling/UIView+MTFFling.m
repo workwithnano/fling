@@ -113,7 +113,6 @@ static char const * const panGestureKey = "panGesture";
         if ([self.targetView.subviews indexOfObject:self] > 0)
         {
             objc_setAssociatedObject(self, originalFrameKey, [NSValue valueWithCGRect:self.frame], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-            self.backgroundColor = [UIColor yellowColor];
             [self.superview bringSubviewToFront:self];
             
         }
@@ -142,22 +141,18 @@ static char const * const panGestureKey = "panGesture";
                 CGRect newFrame = [self.targetView convertRect:CGRectMake(endingX, MIN(MAX(0.f, endingY), (CGRectGetHeight(self.targetView.bounds) - CGRectGetHeight(self.bounds))), CGRectGetWidth(self.frame), CGRectGetHeight(self.frame)) toView:self.superview];
                 self.frame = newFrame;
             } completion:^(BOOL finished) {
-                [UIView animateWithDuration:1.2 delay:0.8 usingSpringWithDamping:0.5f initialSpringVelocity:1.f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                    NSValue *result = objc_getAssociatedObject(self, originalFrameKey);
-                    self.frame = [result CGRectValue];
-                    self.backgroundColor = [UIColor blueColor];
-                    [self dropView];
+                self.alpha = 0.f;
+                [self returnToOriginalFrame];
+                [UIView animateWithDuration:1.2 delay:0.8 usingSpringWithDamping:0.5f initialSpringVelocity:1.f options:UIViewAnimationOptionCurveEaseOut animations:^{
+                    self.alpha = 1;
                 } completion:nil];
             }];
         }
         else
         {
             [self.flingBehavior decelerateWithVelocity:[sender velocityInView:self.targetView] withCompletionBlock:^{
-                [UIView animateWithDuration:1.2 delay:0.0 usingSpringWithDamping:0.5f initialSpringVelocity:1.f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                    NSValue *result = objc_getAssociatedObject(self, originalFrameKey);
-                    self.frame = [result CGRectValue];
-                    self.backgroundColor = [UIColor blueColor];
-                    [self dropView];
+                [UIView animateWithDuration:0.6 delay:0.0 usingSpringWithDamping:0.55f initialSpringVelocity:.1f options:UIViewAnimationOptionCurveEaseOut animations:^{
+                    [self returnToOriginalFrame];
                 } completion:nil];
             }];
         }
@@ -186,6 +181,18 @@ static char const * const panGestureKey = "panGesture";
     {
         return YES;
     }
+}
+
+
+//-----------------------------------------------------------------------
+#pragma mark - UIView return to original form -
+//-----------------------------------------------------------------------
+
+- (void) returnToOriginalFrame
+{
+    NSValue *result = objc_getAssociatedObject(self, originalFrameKey);
+    self.frame = [result CGRectValue];
+    [self dropView];
 }
 
 //-----------------------------------------------------------------------
