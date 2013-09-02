@@ -159,15 +159,6 @@ static char const * const panGestureKey = "panGesture";
     }
 }
 
-- (void)addTranslation:(CGPoint)traslation
-{
-    CGRect slidingViewFrame = self.frame;
-    slidingViewFrame.origin.x += traslation.x;
-    slidingViewFrame.origin.y += traslation.y;
-    
-    self.frame = slidingViewFrame;
-}
-
 // Only allow horizontal swiping…
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
@@ -199,6 +190,23 @@ static char const * const panGestureKey = "panGesture";
 #pragma mark - UIView translations -
 //-----------------------------------------------------------------------
 
+- (void)addTranslation:(CGPoint)traslation
+{
+    CGRect slidingViewFrame = self.frame;
+    slidingViewFrame.origin.x += traslation.x;
+    slidingViewFrame.origin.y += traslation.y;
+    
+    self.frame = slidingViewFrame;
+}
+
+- (CGFloat)distanceFromLeftEdge
+{
+    CGRect frameInWindow = [self.window convertRect:self.frame toWindow:self.window];
+    CGFloat distanceFromLeftEdge = CGRectGetMinX(frameInWindow);
+    NSLog( @"distanceFromLeftEdge: %f", distanceFromLeftEdge );
+    return distanceFromLeftEdge;
+}
+
 - (void)liftView
 {
     [UIView animateWithDuration:0.2 animations:^{
@@ -213,6 +221,7 @@ static char const * const panGestureKey = "panGesture";
         self.layer.transform = CATransform3DMakeTranslation(-4.f, -4.f, 0.f);
     }];
 }
+
 - (void)dropView
 {
     self.layer.shadowOpacity = 0.f;
