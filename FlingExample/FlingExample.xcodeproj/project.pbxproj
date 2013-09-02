@@ -41,7 +41,6 @@
 		3E0D1B1217D23973002C0B2D /* MTFFlingBehavior.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MTFFlingBehavior.m; sourceTree = "<group>"; };
 		3E0D1B1317D23973002C0B2D /* UIView+MTFFling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+MTFFling.h"; sourceTree = "<group>"; };
 		3E0D1B1417D23973002C0B2D /* UIView+MTFFling.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+MTFFling.m"; sourceTree = "<group>"; };
-		3E31A82517D54C3600CFA71C /* MTFFling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MTFFling.h; sourceTree = "<group>"; };
 		3E675F3617D1708800761145 /* MTFCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTFCollectionViewCell.h; sourceTree = "<group>"; };
 		3E675F3717D1708800761145 /* MTFCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTFCollectionViewCell.m; sourceTree = "<group>"; };
 		3E948AAF17D54B4D0094E362 /* MTFFlingBucket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MTFFlingBucket.h; sourceTree = "<group>"; };
@@ -101,7 +100,6 @@
 		3E0D1B1517D23973002C0B2D /* Fling */ = {
 			isa = PBXGroup;
 			children = (
-				3E31A82517D54C3600CFA71C /* MTFFling.h */,
 				3E0D1B1117D23973002C0B2D /* MTFFlingBehavior.h */,
 				3E0D1B1217D23973002C0B2D /* MTFFlingBehavior.m */,
 				3E0D1B1317D23973002C0B2D /* UIView+MTFFling.h */,
@@ -411,7 +409,7 @@
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
 				CLANG_WARN_OBJC_RECEIVER_WEAK = YES;
 				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -436,7 +434,7 @@
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = NO;
 				CLANG_WARN_OBJC_RECEIVER_WEAK = YES;
 				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";

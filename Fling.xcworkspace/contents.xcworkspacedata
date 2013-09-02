@@ -5,9 +5,6 @@
       location = "group:Fling"
       name = "Fling">
       <FileRef
-         location = "group:MTFFling.h">
-      </FileRef>
-      <FileRef
          location = "group:MTFFlingBehavior.h">
       </FileRef>
       <FileRef
