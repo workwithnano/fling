@@ -5,6 +5,9 @@
       location = "group:Fling"
       name = "Fling">
       <FileRef
+         location = "group:MTFFling.h">
+      </FileRef>
+      <FileRef
          location = "group:MTFFlingBehavior.h">
       </FileRef>
       <FileRef
@@ -15,6 +18,12 @@
       </FileRef>
       <FileRef
          location = "group:UIView+MTFFling.m">
+      </FileRef>
+      <FileRef
+         location = "group:MTFFlingBucket.h">
+      </FileRef>
+      <FileRef
+         location = "group:MTFFlingBucket.m">
       </FileRef>
    </Group>
    <FileRef

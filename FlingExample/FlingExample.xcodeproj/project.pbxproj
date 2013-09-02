@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3E0D1B1A17D23987002C0B2D /* MTFFlingBehavior.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E0D1B1217D23973002C0B2D /* MTFFlingBehavior.m */; };
 		3E0D1B1B17D23987002C0B2D /* UIView+MTFFling.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E0D1B1417D23973002C0B2D /* UIView+MTFFling.m */; };
+		3E31A82617D54DFA00CFA71C /* MTFFlingBucket.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E948AB017D54B4D0094E362 /* MTFFlingBucket.m */; };
 		3E675F3817D1708800761145 /* MTFCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E675F3717D1708800761145 /* MTFCollectionViewCell.m */; };
 		3ED46C4E17CD99DD0037F62A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ED46C4D17CD99DC0037F62A /* Foundation.framework */; };
 		3ED46C5017CD99DD0037F62A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ED46C4F17CD99DD0037F62A /* CoreGraphics.framework */; };
@@ -40,8 +41,11 @@
 		3E0D1B1217D23973002C0B2D /* MTFFlingBehavior.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MTFFlingBehavior.m; sourceTree = "<group>"; };
 		3E0D1B1317D23973002C0B2D /* UIView+MTFFling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+MTFFling.h"; sourceTree = "<group>"; };
 		3E0D1B1417D23973002C0B2D /* UIView+MTFFling.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+MTFFling.m"; sourceTree = "<group>"; };
+		3E31A82517D54C3600CFA71C /* MTFFling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MTFFling.h; sourceTree = "<group>"; };
 		3E675F3617D1708800761145 /* MTFCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTFCollectionViewCell.h; sourceTree = "<group>"; };
 		3E675F3717D1708800761145 /* MTFCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTFCollectionViewCell.m; sourceTree = "<group>"; };
+		3E948AAF17D54B4D0094E362 /* MTFFlingBucket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MTFFlingBucket.h; sourceTree = "<group>"; };
+		3E948AB017D54B4D0094E362 /* MTFFlingBucket.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MTFFlingBucket.m; sourceTree = "<group>"; };
 		3ED46C4A17CD99DC0037F62A /* FlingExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlingExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3ED46C4D17CD99DC0037F62A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3ED46C4F17CD99DD0037F62A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -97,10 +101,13 @@
 		3E0D1B1517D23973002C0B2D /* Fling */ = {
 			isa = PBXGroup;
 			children = (
+				3E31A82517D54C3600CFA71C /* MTFFling.h */,
 				3E0D1B1117D23973002C0B2D /* MTFFlingBehavior.h */,
 				3E0D1B1217D23973002C0B2D /* MTFFlingBehavior.m */,
 				3E0D1B1317D23973002C0B2D /* UIView+MTFFling.h */,
 				3E0D1B1417D23973002C0B2D /* UIView+MTFFling.m */,
+				3E948AAF17D54B4D0094E362 /* MTFFlingBucket.h */,
+				3E948AB017D54B4D0094E362 /* MTFFlingBucket.m */,
 			);
 			name = Fling;
 			path = ../Fling;
@@ -284,6 +291,7 @@
 				3ED46C5A17CD99DD0037F62A /* main.m in Sources */,
 				3E0D1B1A17D23987002C0B2D /* MTFFlingBehavior.m in Sources */,
 				3E0D1B1B17D23987002C0B2D /* UIView+MTFFling.m in Sources */,
+				3E31A82617D54DFA00CFA71C /* MTFFlingBucket.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -400,12 +408,22 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
+				CLANG_WARN_OBJC_RECEIVER_WEAK = YES;
+				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = YES;
 				CODE_SIGN_IDENTITY = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FlingExample-Prefix.pch";
+				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = YES;
+				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../Fling/";
 				INFOPLIST_FILE = "FlingExample-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "2855EFF2-ABE3-47AA-9A53-613356F35800";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../Fling/";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -415,12 +433,22 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
+				CLANG_WARN_OBJC_RECEIVER_WEAK = YES;
+				CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FlingExample-Prefix.pch";
+				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = YES;
+				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../Fling/";
 				INFOPLIST_FILE = "FlingExample-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../Fling/";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
