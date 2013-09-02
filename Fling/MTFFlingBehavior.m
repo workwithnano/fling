@@ -20,7 +20,8 @@ const CGFloat kTimerInterval = 0.005;
 #pragma mark - Private properties -
 //-----------------------------------------------------------------------
 
-@property (nonatomic, strong) NSTimer *timer;
+@property (nonatomic) NSTimer *timer;
+@property (nonatomic) id<MTFFlingBehaviorDelegate> strongTarget;
 
 @end
 
@@ -87,6 +88,7 @@ const CGFloat kTimerInterval = 0.005;
     {
         userInfo[@"completionBlock"] = completionBlock;
     }
+    self.strongTarget = self.target;
     [self.timer invalidate];
     self.timer = [NSTimer scheduledTimerWithTimeInterval:kTimerInterval target:self selector:@selector(step:) userInfo:userInfo repeats:YES];
 }
@@ -119,9 +121,17 @@ const CGFloat kTimerInterval = 0.005;
             completionBlock();
         }
         [timer invalidate];
+        self.strongTarget = nil;
         return;
     }
-    [self.target addTranslation:distance];
+    
+    if (self.strongTarget)
+        [self.strongTarget addTranslation:distance];
+    else
+    {
+        [timer invalidate];
+        return;
+    }
 }
 
 
