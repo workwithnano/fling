@@ -78,18 +78,7 @@ const CGFloat kTimerInterval = 0.005;
         userInfo[@"completionBlock"] = completionBlock;
     }
     [self.timer invalidate];
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:kTimerInterval target:self selector:@selector(step:) userInfo:userInfo repeats:YES];
-}
-
-- (void)decelerateWithVelocity:(CGPoint)velocity inView:(UIView*)boundingView withCompletionBlock:(DecelerationCompletionBlock)completionBlock
-{
-    NSMutableDictionary *userInfo = [@{@"velocity" : [NSValue valueWithCGPoint:velocity]} mutableCopy];
-    if (completionBlock)
-    {
-        userInfo[@"completionBlock"] = completionBlock;
-    }
-    self.strongTarget = self.target;
-    [self.timer invalidate];
+    self.strongTarget = _target;
     self.timer = [NSTimer scheduledTimerWithTimeInterval:kTimerInterval target:self selector:@selector(step:) userInfo:userInfo repeats:YES];
 }
 
