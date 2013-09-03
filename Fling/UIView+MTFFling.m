@@ -9,6 +9,7 @@
 #import <objc/runtime.h>
 #import <QuartzCore/QuartzCore.h>
 #import "UIView+MTFFling.h"
+#import "MTFFlingBucket.h"
 
 //-----------------------------------------------------------------------
 #pragma mark - Static variables and constants -
@@ -122,6 +123,7 @@ static char const * const panGestureKey = "panGesture";
         CGPoint translation = [sender translationInView:self.targetView];
         self.center = CGPointMake(self.center.x + translation.x, self.center.y + translation.y);
         [sender setTranslation:CGPointZero inView:self.targetView];
+        [self updateFlingBucketFrame];
     }
     else if (sender.state == UIGestureRecognizerStateCancelled ||
         sender.state == UIGestureRecognizerStateEnded ||
@@ -174,6 +176,28 @@ static char const * const panGestureKey = "panGesture";
     }
 }
 
+//-----------------------------------------------------------------------
+#pragma mark - MTFFlingBucket calls -
+//-----------------------------------------------------------------------
+
+- (void)updateFlingBucketFrame
+{
+    CGPoint originPoint = [self originInWindow];
+    CGPoint centerPoint = [self centerInWindow];
+    if (originPoint.x > BUCKET_WIDTH)
+    {
+        return;
+    }
+    
+    CGFloat bucketCenterX = 0.f - BUCKET_WIDTH + originPoint.x + ([MTFFlingBucket sharedBucket].bounds.size.width/2.f);
+    CGFloat bucketCenterY = centerPoint.y;
+    [MTFFlingBucket sharedBucket].center = CGPointMake(bucketCenterX, bucketCenterY);
+    
+    if (![MTFFlingBucket sharedBucket].superview)
+    {
+        [self.targetView addSubview:[MTFFlingBucket sharedBucket]];
+    }
+}
 
 //-----------------------------------------------------------------------
 #pragma mark - UIView return to original form -
@@ -199,12 +223,13 @@ static char const * const panGestureKey = "panGesture";
     self.frame = slidingViewFrame;
 }
 
-- (CGFloat)distanceFromLeftEdge
+- (CGPoint)centerInWindow
 {
-    CGRect frameInWindow = [self.window convertRect:self.frame toWindow:self.window];
-    CGFloat distanceFromLeftEdge = CGRectGetMinX(frameInWindow);
-    NSLog( @"distanceFromLeftEdge: %f", distanceFromLeftEdge );
-    return distanceFromLeftEdge;
+    return [self.window convertPoint:self.center toWindow:self.window];
+}
+- (CGPoint)originInWindow
+{
+    return [self.window convertPoint:self.frame.origin toWindow:self.window];
 }
 
 - (void)liftView
