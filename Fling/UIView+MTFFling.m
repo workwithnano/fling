@@ -15,6 +15,8 @@
 #pragma mark - Static variables and constants -
 //-----------------------------------------------------------------------
 
+static CGFloat const BUCKET_TRIGGER_DISTANCE = 20.f;
+
 static char const * const flingBehaviorKey = "flingBehavior";
 static char const * const superViewKey = "superView";
 static char const * const originalFrameKey = "originalFrame";
@@ -182,14 +184,14 @@ static char const * const panGestureKey = "panGesture";
 
 - (void)updateFlingBucketFrame
 {
-    CGPoint originPoint = [self originInWindow];
-    CGPoint centerPoint = [self centerInWindow];
+    CGPoint originPoint = [self originInTarget];
+    CGPoint centerPoint = [self centerInTarget];
     if (originPoint.x > BUCKET_WIDTH)
     {
         return;
     }
     
-    CGFloat bucketCenterX = 0.f - BUCKET_WIDTH + originPoint.x + ([MTFFlingBucket sharedBucket].bounds.size.width/2.f);
+    CGFloat bucketCenterX = MIN(([MTFFlingBucket sharedBucket].bounds.size.width/2.f), BUCKET_TRIGGER_DISTANCE - BUCKET_WIDTH - originPoint.x + ([MTFFlingBucket sharedBucket].bounds.size.width/2.f));
     CGFloat bucketCenterY = centerPoint.y;
     [MTFFlingBucket sharedBucket].center = CGPointMake(bucketCenterX, bucketCenterY);
     
@@ -223,6 +225,15 @@ static char const * const panGestureKey = "panGesture";
     self.frame = slidingViewFrame;
 }
 
+- (CGPoint)centerInTarget
+{
+    return [self.targetView convertPoint:self.center fromView:self.superview];
+}
+- (CGPoint)originInTarget
+{
+    return [self.targetView convertPoint:self.frame.origin fromView:self.superview];
+}
+
 - (CGPoint)centerInWindow
 {
     return [self.window convertPoint:self.center toWindow:self.window];
@@ -243,7 +254,6 @@ static char const * const panGestureKey = "panGesture";
         
         UIBezierPath *path = [UIBezierPath bezierPathWithRect:self.bounds];
         self.layer.shadowPath = path.CGPath;
-        self.layer.transform = CATransform3DMakeTranslation(-4.f, -4.f, 0.f);
     }];
 }
 
