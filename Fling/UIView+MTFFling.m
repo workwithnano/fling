@@ -193,7 +193,13 @@ static char const * const panGestureKey = "panGesture";
     
     CGFloat bucketCenterX = MIN(([MTFFlingBucket sharedBucket].bounds.size.width/2.f), BUCKET_TRIGGER_DISTANCE - BUCKET_WIDTH - originPoint.x + ([MTFFlingBucket sharedBucket].bounds.size.width/2.f));
     CGFloat bucketCenterY = centerPoint.y;
-    [MTFFlingBucket sharedBucket].center = CGPointMake(bucketCenterX, bucketCenterY);
+    CGPoint newCenter = CGPointMake(bucketCenterX, bucketCenterY);
+    
+    [UIView animateWithDuration:0.2 delay:0.0 options:UIViewAnimationOptionOverrideInheritedDuration|UIViewAnimationOptionCurveEaseInOut animations:^{
+        
+        [MTFFlingBucket sharedBucket].center = newCenter;
+        
+    } completion:nil];
     
     if (![MTFFlingBucket sharedBucket].superview)
     {
@@ -209,6 +215,7 @@ static char const * const panGestureKey = "panGesture";
 {
     NSValue *result = objc_getAssociatedObject(self, originalFrameKey);
     self.frame = [result CGRectValue];
+    self.transform = CGAffineTransformIdentity;
     [self dropView];
 }
 
@@ -254,6 +261,8 @@ static char const * const panGestureKey = "panGesture";
         
         UIBezierPath *path = [UIBezierPath bezierPathWithRect:self.bounds];
         self.layer.shadowPath = path.CGPath;
+        
+        self.transform = CGAffineTransformMakeScale(0.8f, 0.8f);
     }];
 }
 
