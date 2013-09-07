@@ -10,4 +10,6 @@
 
 @interface MTFCollectionViewCell : UICollectionViewCell
 
+- (void) setTitle:(NSString*)title;
+
 @end

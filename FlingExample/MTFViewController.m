@@ -65,11 +65,12 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"flingerCell" forIndexPath:indexPath];
+    MTFCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"flingerCell" forIndexPath:indexPath];
     if (!cell.targetView)
     {
         cell.targetView = self.view;
     }
+    [cell setTitle:[NSString stringWithFormat:@"%i", indexPath.item]];
     return cell;
 }
 
