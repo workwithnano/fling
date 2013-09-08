@@ -125,7 +125,7 @@ static char const * const panGestureKey = "panGesture";
         CGPoint translation = [sender translationInView:self.targetView];
         self.center = CGPointMake(self.center.x + translation.x, self.center.y + translation.y);
         [sender setTranslation:CGPointZero inView:self.targetView];
-        [self updateFlingBucketFrame];
+        [self updateFlingBucket];
     }
     else if (sender.state == UIGestureRecognizerStateCancelled ||
         sender.state == UIGestureRecognizerStateEnded ||
@@ -149,6 +149,7 @@ static char const * const panGestureKey = "panGesture";
                 [self returnToOriginalFrame];
                 [UIView animateWithDuration:1.2 delay:0.8 usingSpringWithDamping:0.5f initialSpringVelocity:1.f options:UIViewAnimationOptionCurveEaseOut animations:^{
                     self.alpha = 1;
+                    [self bringFlingBucketToRest];
                 } completion:nil];
             }];
         }
@@ -157,6 +158,7 @@ static char const * const panGestureKey = "panGesture";
             [self.flingBehavior decelerateWithVelocity:[sender velocityInView:self.targetView] withCompletionBlock:^{
                 [UIView animateWithDuration:0.6 delay:0.0 usingSpringWithDamping:0.55f initialSpringVelocity:.1f options:UIViewAnimationOptionCurveEaseOut animations:^{
                     [self returnToOriginalFrame];
+                    [self bringFlingBucketToRest];
                 } completion:nil];
             }];
         }
@@ -182,7 +184,7 @@ static char const * const panGestureKey = "panGesture";
 #pragma mark - MTFFlingBucket calls -
 //-----------------------------------------------------------------------
 
-- (void)updateFlingBucketFrame
+- (void)updateFlingBucket
 {
     CGPoint originPoint = [self originInTarget];
     CGPoint centerPoint = [self centerInTarget];
@@ -190,6 +192,12 @@ static char const * const panGestureKey = "panGesture";
     {
         return;
     }
+    [self updateFlingBucketFrameWithOriginPoint:originPoint centerPoint:centerPoint];
+    [self updateFlingBucketMask];
+}
+
+- (void)updateFlingBucketFrameWithOriginPoint:(CGPoint)originPoint centerPoint:(CGPoint)centerPoint
+{
     
     CGFloat bucketCenterX = MIN(([MTFFlingBucket sharedBucket].bounds.size.width/2.f), BUCKET_TRIGGER_DISTANCE - BUCKET_WIDTH - originPoint.x + ([MTFFlingBucket sharedBucket].bounds.size.width/2.f));
     CGFloat bucketCenterY = centerPoint.y;
@@ -205,6 +213,34 @@ static char const * const panGestureKey = "panGesture";
     {
         [self.targetView addSubview:[MTFFlingBucket sharedBucket]];
     }
+}
+
+- (void)updateFlingBucketMask
+{
+    CGRect topViewFrameInFlingBounds = [self convertRect:[MTFFlingBucket sharedBucket].topViewFrame fromView:[MTFFlingBucket sharedBucket]];
+    
+    // Create a mask layer and the frame to determine what will be visible in the view.
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    CGRect maskRect = CGRectSetLeft(rectSubtract(self.bounds, topViewFrameInFlingBounds, CGRectMaxXEdge), CGRectGetWidth(topViewFrameInFlingBounds));
+    NSLog( @"------- maskRect : %@", NSStringFromCGRect(maskRect) );
+    
+    // Create a path with the rectangle in it.
+    CGAffineTransform transform = self.transform;
+    CGPathRef path = CGPathCreateWithRect(maskRect, &transform);
+    
+    // Set the path to the mask layer.
+    maskLayer.path = path;
+    
+    // Release the path since it's not covered by ARC.
+    CGPathRelease(path);
+    
+    // Set the mask of the view.
+    self.layer.mask = maskLayer;
+}
+
+- (void)bringFlingBucketToRest
+{
+    [MTFFlingBucket sharedBucket].frame = CGRectMakeWith( CGPointMake(-(CGRectGetWidth([MTFFlingBucket sharedBucket].frame)),-(CGRectGetHeight([MTFFlingBucket sharedBucket].frame))), [MTFFlingBucket sharedBucket].frame.size );
 }
 
 //-----------------------------------------------------------------------
@@ -273,6 +309,31 @@ static char const * const panGestureKey = "panGesture";
     self.layer.shadowRadius = 0.f;
     self.layer.masksToBounds = YES;
     self.layer.transform = CATransform3DIdentity;
+}
+
+
+//-----------------------------------------------------------------------
+#pragma mark - CGRect helpers -
+//-----------------------------------------------------------------------
+
+CGRect rectSubtract(CGRect r1, CGRect r2, CGRectEdge edge) {
+    // Find how much r1 overlaps r2
+    CGRect intersection = CGRectIntersection(r1, r2);
+    
+    // If they don't intersect, just return r1. No subtraction to be done
+    if (CGRectIsNull(intersection)) {
+        return r1;
+    }
+    
+    // Figure out how much we chop off r1
+    float chopAmount = (edge == CGRectMinXEdge || edge == CGRectMaxXEdge)
+    ? intersection.size.width
+    : intersection.size.height;
+    
+    CGRect r3, throwaway;
+    // Chop
+    CGRectDivide(r1, &throwaway, &r3, chopAmount, edge);
+    return r3;
 }
 
 @end

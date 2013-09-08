@@ -31,10 +31,16 @@ typedef void (^DecelerationCompletionBlock)();
 // Public properties
 //-----------------------------------------------------------------------
 
+@property (nonatomic, readonly) CGRect topViewFrame;
+@property (nonatomic, readonly) CGRect bottomViewFrame;
+
 //-----------------------------------------------------------------------
 // Public methods
 //-----------------------------------------------------------------------
 
 + (instancetype)sharedBucket;
+
+- (void)setTopView:(UIView*)view;
+- (void)setBottomView:(UIView*)view;
 
 @end

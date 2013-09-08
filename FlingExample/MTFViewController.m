@@ -10,6 +10,7 @@
 #import "MTFFlingBehavior.h"
 #import "MTFCollectionViewCell.h"
 #import "UIView+MTFFling.h"
+#import "MTFFlingBucket.h"
 
 @interface MTFViewController ()
 <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
@@ -35,6 +36,13 @@
     self.collectionView.dataSource = self;
     [self.collectionView registerClass:[MTFCollectionViewCell class] forCellWithReuseIdentifier:@"flingerCell"];
     [self.view addSubview:self.collectionView];
+    
+    UIView *topBucketView = [[UIView alloc] initWithFrame:CGRectMake(-10,10, 50,100)];
+    UIView *bottomBucketView = [[UIView alloc] initWithFrame:CGRectMake(0,0, 50,120)];
+    topBucketView.backgroundColor = [UIColor lightGrayColor];
+    bottomBucketView.backgroundColor = [UIColor darkGrayColor];
+    [[MTFFlingBucket sharedBucket] setTopView:topBucketView];
+    [[MTFFlingBucket sharedBucket] setBottomView:bottomBucketView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
